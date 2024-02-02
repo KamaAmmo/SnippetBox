@@ -1,9 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
+	"path/filepath"
+	"snippetbox/internal/models"
 	"strconv"
 )
 
@@ -13,9 +16,10 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	files := []string{
-		"./ui/html/base.tmpl.html",
-		"./ui/html/pages/home.tmpl",
-		"./ui/html/partials/nav.tmpl",
+
+		filepath.Join("./ui/html", "base.tmpl.html"),
+		filepath.Join("./ui/html/pages", "home.tmpl"),
+		filepath.Join("./ui/html/partials", "nav.tmpl"),
 	}
 
 	ts, err := template.ParseFiles(files...)
@@ -38,7 +42,17 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Display a specific snippet with ID %d:", id)
+	snippet, err := app.snippets.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%+v", snippet)
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +66,7 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	content := "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nunc."
 	expires := 7
 	id, err := app.snippets.Insert(title, content, expires)
-	if err != nil{
+	if err != nil {
 		app.serverError(w, err)
 		return
 	}
