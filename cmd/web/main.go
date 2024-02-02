@@ -8,6 +8,8 @@ import (
 	"os"
 	"database/sql"
 
+	// "github.com/KamaAmmo/SnippetBox/internal/models"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -66,4 +68,6 @@ func openDB(dsn string) (*sql.DB, error){
 		return nil, err
 	}
 	return db, nil
+
+	
 }
