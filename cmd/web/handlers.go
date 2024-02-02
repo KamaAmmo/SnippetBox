@@ -48,5 +48,15 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Snippet succesfully created!"))
+	title := "Lorem ipsum"
+	content := "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nunc."
+	expires := 7
+	id, err := app.snippets.Insert(title, content, expires)
+	if err != nil{
+		app.serverError(w, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/snippet/view?id=%d", id), http.StatusSeeOther)
+
 }
