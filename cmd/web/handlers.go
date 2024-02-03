@@ -16,7 +16,6 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	files := []string{
-
 		filepath.Join("./ui/html", "base.tmpl.html"),
 		filepath.Join("./ui/html/pages", "home.tmpl"),
 		filepath.Join("./ui/html/partials", "nav.tmpl"),
@@ -49,6 +48,24 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		} else {
 			app.serverError(w, err)
 		}
+		return
+	}
+
+	files := []string{
+		filepath.Join("./ui/html", "base.tmpl.html"),
+		filepath.Join("./ui/html/partials", "nav.tmpl"),
+		filepath.Join("./ui/html/pages", "view.tmpl.html"),
+	}
+
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	err = ts.ExecuteTemplate(w, "base", snippet)
+	if err != nil {
+		app.serverError(w, err)
 		return
 	}
 
