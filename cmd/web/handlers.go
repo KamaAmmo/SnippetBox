@@ -16,9 +16,9 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	files := []string{
-		filepath.Join("./ui/html", "base.tmpl.html"),
-		filepath.Join("./ui/html/pages", "home.tmpl"),
-		filepath.Join("./ui/html/partials", "nav.tmpl"),
+		filepath.Join("./ui/html/base.tmpl.html"),
+		filepath.Join("./ui/html/pages/home.tmpl.html"),
+		filepath.Join("./ui/html/partials/nav.tmpl.html"),
 	}
 
 	ts, err := template.ParseFiles(files...)
@@ -52,9 +52,9 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	}
 
 	files := []string{
-		filepath.Join("./ui/html", "base.tmpl.html"),
-		filepath.Join("./ui/html/partials", "nav.tmpl"),
-		filepath.Join("./ui/html/pages", "view.tmpl.html"),
+		filepath.Join("./ui/html/base.tmpl.html"),
+		filepath.Join("./ui/html/partials/nav.tmpl.html"),
+		filepath.Join("./ui/html/pages/view.tmpl.html"),
 	}
 
 	ts, err := template.ParseFiles(files...)
@@ -63,7 +63,11 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", snippet)
+	data := &templateData{
+		Snippet: snippet,
+	}
+
+	err = ts.ExecuteTemplate(w, "base", data)
 	if err != nil {
 		app.serverError(w, err)
 		return
