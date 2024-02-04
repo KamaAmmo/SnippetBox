@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"snippetbox/internal/models"
+	"html/template"
 
 	// "github.com/KamaAmmo/SnippetBox/internal/models"
 
@@ -22,6 +23,7 @@ type application struct {
 	infoLog  *log.Logger
 	errorLog *log.Logger
 	snippets *models.SnippetModel
+	templateCache map[string]*template.Template
 }
 
 func main() {
@@ -37,13 +39,18 @@ func main() {
 	if err != nil {
 		errorLog.Fatal(err)
 	}
-
 	defer db.Close()
+
+	templateCache, err := newTemplateCache()
+	if err != nil{
+		log.Fatal(err)
+	}
 
 	app := application{
 		infoLog,
 		errorLog,
 		&models.SnippetModel{DB: db},
+		templateCache,
 	}
 
 	srv := &http.Server{

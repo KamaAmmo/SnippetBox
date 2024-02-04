@@ -55,8 +55,6 @@ func (m *SnippetModel) Get(id int) (*Snippet, error) {
 		}
 	}
 
-	
-
 	return &s, nil
 }
 
@@ -71,7 +69,7 @@ func (m *SnippetModel) Latest() ([]*Snippet, error) {
 	}
 	defer rows.Close()
 
-	result := make([]*Snippet, 10)
+	result := []*Snippet{}
 	for rows.Next() {
 		s := &Snippet{}
 		err = rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
