@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-
 )
 
 func secureHeader(next http.Handler) http.Handler {
@@ -17,7 +16,7 @@ func secureHeader(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
-	
+
 }
 
 func (app *application) logRequest(next http.Handler) http.Handler {

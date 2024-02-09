@@ -4,13 +4,11 @@ import (
 	// "fmt"
 	"database/sql"
 	"flag"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"snippetbox/internal/models"
-	"html/template"
-
-	// "github.com/KamaAmmo/SnippetBox/internal/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -20,9 +18,9 @@ const (
 )
 
 type application struct {
-	infoLog  *log.Logger
-	errorLog *log.Logger
-	snippets *models.SnippetModel
+	infoLog       *log.Logger
+	errorLog      *log.Logger
+	snippets      *models.SnippetModel
 	templateCache map[string]*template.Template
 }
 
@@ -42,7 +40,7 @@ func main() {
 	defer db.Close()
 
 	templateCache, err := newTemplateCache()
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 
