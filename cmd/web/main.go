@@ -2,7 +2,6 @@ package main
 
 import (
 	// "fmt"
-	"database/sql"
 	"flag"
 	"html/template"
 	"log"
@@ -33,7 +32,7 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Llongfile)
 
-	db, err := openDB(*dsn)
+	db, err := models.OpenDB(*dsn)
 	if err != nil {
 		errorLog.Fatal(err)
 	}
@@ -62,15 +61,3 @@ func main() {
 	errorLog.Fatal(err)
 }
 
-func openDB(dsn string) (*sql.DB, error) {
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		return nil, err
-	}
-
-	if err = db.Ping(); err != nil {
-		return nil, err
-	}
-	return db, nil
-
-}

@@ -6,6 +6,20 @@ import (
 	"time"
 )
 
+
+func OpenDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+	return db, nil
+
+}
+
 // Define a Snippet type to hold the data for an individual snippet. Notice how
 // the fields of the struct correspond to the fields in our MySQL snippets
 // table?
