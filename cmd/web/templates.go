@@ -3,6 +3,7 @@ package main
 import (
 	// "fmt"
 	"html/template"
+	"net/http"
 	"path/filepath"
 	"snippetbox/internal/models"
 	"time"
@@ -12,8 +13,18 @@ type templateData struct {
 	Snippet     *models.Snippet
 	Snippets    []*models.Snippet
 	CurrentYear int
-	Form any 
+	Form        any
+	Flash       string
 }
+
+func (app *application) newTemplateData(r *http.Request) *templateData {
+	return &templateData{
+		CurrentYear: time.Now().Year(),
+		Flash: app.sessionManager.PopString(r.Context(), "flash"),
+	}
+}
+
+
 
 func humanDate(t time.Time) string {
 	return t.Format(time.DateTime)

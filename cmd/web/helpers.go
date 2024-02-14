@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
-	"time"
 
 	"github.com/go-playground/form/v4"
 )
@@ -44,12 +43,6 @@ func (app *application) render(w http.ResponseWriter, status int, page string, d
 
 	w.WriteHeader(status)
 	buf.WriteTo(w)
-}
-
-func (app *application) newTemplateData() *templateData {
-	return &templateData{
-		CurrentYear: time.Now().Year(),
-	}
 }
 
 func (app *application) decodePostForm(r *http.Request, dst any) error {
