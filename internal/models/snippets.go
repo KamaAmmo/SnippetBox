@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-
 func OpenDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
@@ -20,9 +19,6 @@ func OpenDB(dsn string) (*sql.DB, error) {
 
 }
 
-// Define a Snippet type to hold the data for an individual snippet. Notice how
-// the fields of the struct correspond to the fields in our MySQL snippets
-// table?
 type Snippet struct {
 	ID      int
 	Title   string
@@ -31,7 +27,6 @@ type Snippet struct {
 	Expires time.Time
 }
 
-// Define a SnippetModel type which wraps a sql.DB connection pool.
 type SnippetModel struct {
 	DB *sql.DB
 }
@@ -72,7 +67,6 @@ func (m *SnippetModel) Get(id int) (*Snippet, error) {
 	return &s, nil
 }
 
-// return 10 latest created snippets
 func (m *SnippetModel) Latest() ([]*Snippet, error) {
 	stmt := `SELECT id, title, content, created, expires FROM snippets
 		WHERE expires > UTC_TIMESTAMP() ORDER BY id DESC LIMIT 10`
