@@ -11,8 +11,8 @@
             "driver": "MySQL",
             "name": "Snippets",
             "database": "snippetbox",
-            "username": "web",
-            "password": "pass"
+            "username": "root",
+            "password": "1234"
         }
     ]
 }
