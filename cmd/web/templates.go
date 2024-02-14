@@ -1,6 +1,7 @@
 package main
 
 import (
+	// "fmt"
 	"html/template"
 	"path/filepath"
 	"snippetbox/internal/models"
