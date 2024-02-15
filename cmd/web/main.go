@@ -18,9 +18,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const (
-	p_infoLog string = "./tmp/info.log"
-)
 
 type application struct {
 	infoLog        *log.Logger
