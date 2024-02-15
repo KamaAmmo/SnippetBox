@@ -74,6 +74,9 @@ func main() {
 		Handler:  app.routes(),
 		ErrorLog: errorLog,
 		TLSConfig: tlsConfig,
+		IdleTimeout: time.Minute,
+		ReadTimeout: 5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
 	infoLog.Println("Starting server on", *addr)
