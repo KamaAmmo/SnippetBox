@@ -18,11 +18,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-
 type application struct {
 	infoLog        *log.Logger
 	errorLog       *log.Logger
 	snippets       *models.SnippetModel
+	users          *models.UserModel
 	templateCache  map[string]*template.Template
 	formDecoder    *form.Decoder
 	sessionManager *scs.SessionManager
@@ -60,9 +60,10 @@ func main() {
 		infoLog,
 		errorLog,
 		&models.SnippetModel{DB: db},
+		&models.UserModel{DB: db},
 		templateCache,
 		formDecoder,
-		sessionManager,
+		sessionManager,	
 	}
 
 	tlsConfig := &tls.Config{
@@ -70,12 +71,12 @@ func main() {
 	}
 
 	srv := &http.Server{
-		Addr:     *addr,
-		Handler:  app.routes(),
-		ErrorLog: errorLog,
-		TLSConfig: tlsConfig,
-		IdleTimeout: time.Minute,
-		ReadTimeout: 5 * time.Second,
+		Addr:         *addr,
+		Handler:      app.routes(),
+		ErrorLog:     errorLog,
+		TLSConfig:    tlsConfig,
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 
