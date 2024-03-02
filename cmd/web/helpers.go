@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
-	
+
 	"github.com/go-playground/form/v4"
 )
 
@@ -59,6 +59,9 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 
 		return err
 	}
-
 	return nil
+}
+
+func (app *application) isAuthenticated(r *http.Request) bool {
+	return app.sessionManager.Exists(r.Context(), "authenticatedUserID")
 }
