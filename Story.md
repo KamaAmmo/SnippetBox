@@ -41,3 +41,8 @@ Middleware:
         3) Кастомизируем поведение СМ
     
     Создаем бд в которой будет храниться ИД сессии, данные и срок сгорания
+
+
+Глава User Authorisation:
+    Хэширование паролей- используем crypto/bcrypt пакет, из нее нам нужны 2 функции - bcrypt.GenerateFromPassword(pass, cost) - (hash, err) и CompareHashAndPassword(pass) - err (nil if match).Than more cost than more expensive to crack hash for attacker
+    
