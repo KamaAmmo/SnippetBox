@@ -34,7 +34,7 @@ func (m *UserModel) Insert(name, email, pass string) error {
 	if err != nil {
 		var mySQLError *mysql.MySQLError
 		if errors.As(err, &mySQLError) {
-			if mySQLError.Number == 1062 && strings.Contains(mySQLError.Message, "userc_uc_email") { //1062 -ERR_DUP_ENTRY
+			if mySQLError.Number == 1062 && strings.Contains(mySQLError.Message, "users_uc_email") { //1062 -ERR_DUP_ENTRY
 				return ErrDuplicateEmail
 			}
 		}
@@ -45,7 +45,30 @@ func (m *UserModel) Insert(name, email, pass string) error {
 }
 
 func (m *UserModel) Authenticate(email, pass string) (int, error) {
-	return 0, nil
+	var id int
+	var HashedPassword []byte
+
+	stmt := `SELECT id, hashed_password from users`
+
+	err := m.DB.QueryRow(stmt, email).Scan(&id, &HashedPassword)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return 0, ErrInvalidCredentials
+		} else {
+			return 0, err
+		}
+	}
+
+	err = bcrypt.CompareHashAndPassword(HashedPassword, []byte(pass))
+	if err != nil {
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return 0, ErrInvalidCredentials
+		} else {
+			return 0, err
+		}
+	}
+
+	return id, nil
 }
 
 func (m *UserModel) Exists(id int) (bool, error) {
