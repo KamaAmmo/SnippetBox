@@ -1,7 +1,7 @@
 # Full-stack Web Application on Go 
 
 Это полноценное фуллстэк веб приложение, которое позволяет пользователям работать с текстовыми фрагментами (подобно GitHub Gists)
-<img width="500" src="./lets-go-screenshot.png" />
+<img width="500" src="./snippetbox_main.png" />
 
 ### Features
 
