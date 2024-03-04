@@ -1,9 +1,10 @@
-# Full-stack Web Application on Go 
-
+# Full-stack Go Web Application 
 Это полноценное фуллстэк веб приложение, которое позволяет пользователям работать с текстовыми фрагментами (подобно GitHub Gists)
-<img width="500" src="./snippetbox_main.png" />
 
-### Features
+<img width="800" src="./snippetbox_main.png" />
+
+
+### Особенности 
 
 - Аутенфикация. Пользователи могут регистрироваться и авторизовываться
 - Protected endpoints. Только зарегестрированные пользователи могут создавать и удалять сниппеты
