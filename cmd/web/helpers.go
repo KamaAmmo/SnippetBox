@@ -63,5 +63,11 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 }
 
 func (app *application) isAuthenticated(r *http.Request) bool {
-	return app.sessionManager.Exists(r.Context(), "authenticatedUserID")
+	isAuth, ok := r.Context().Value(isAuthenticatedContextKey).(bool)
+	//если не удалось преобразовать тип данных в бул или такого ключа с контексте нет, то предполагаем что юзер не авторизован
+	if !ok {
+		return false
+	}
+
+	return isAuth
 }
