@@ -6,18 +6,13 @@ import (
 	"time"
 )
 
-func OpenDB(dsn string) (*sql.DB, error) {
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		return nil, err
-	}
 
-	if err = db.Ping(); err != nil {
-		return nil, err
-	}
-	return db, nil
-
+type SnippetModelInterface interface {
+	Insert(title string, content string, expires int) (int, error)
+	Get(id int) (*Snippet, error)
+	Latest() ([]*Snippet, error)
 }
+
 
 type Snippet struct {
 	ID      int
@@ -29,6 +24,19 @@ type Snippet struct {
 
 type SnippetModel struct {
 	DB *sql.DB
+}
+
+func OpenDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+	return db, nil
+
 }
 
 func (m *SnippetModel) Insert(title string, content string, expires int) (int, error) {

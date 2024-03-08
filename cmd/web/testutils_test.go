@@ -7,7 +7,12 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/http/httptest"
+	"snippetbox/internal/models/mocks"
 	"testing"
+	"time"
+
+	"github.com/alexedwards/scs/v2"
+	"github.com/go-playground/form/v4"
 )
 
 type testServer struct {
@@ -36,10 +41,26 @@ func newTestServer(t *testing.T, h http.Handler) *testServer {
 	return &testServer{ts}
 }
 
-func newTestApplication(t *testing.T) application {
-	return application{
-		infoLog:  log.New(io.Discard, "", 0),
+func newTestApplication(t *testing.T) *application {
+	templateCache, err := newTemplateCache()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	formDecoder := form.NewDecoder()
+
+	sessionManager := scs.New()
+	sessionManager.Lifetime = 12 * time.Hour
+	sessionManager.Cookie.Secure = true
+
+	return &application{
+		infoLog: log.New(io.Discard, "", 0),
 		errorLog: log.New(io.Discard, "", 0),
+		snippets: &mocks.SnippetModel{},
+		users: &mocks.UserModel{},
+		sessionManager: sessionManager,
+		formDecoder: formDecoder,
+		templateCache: templateCache,
 	}
 }
 
