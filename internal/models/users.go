@@ -48,7 +48,7 @@ func (m *UserModel) Authenticate(email, pass string) (int, error) {
 	var id int
 	var HashedPassword []byte
 
-	stmt := `SELECT id, hashed_password from users`
+	stmt := `SELECT id, hashed_password FROM users WHERE email = ?`
 
 	err := m.DB.QueryRow(stmt, email).Scan(&id, &HashedPassword)
 	if err != nil {
@@ -73,7 +73,7 @@ func (m *UserModel) Authenticate(email, pass string) (int, error) {
 
 func (m *UserModel) Exists(id int) (bool, error) {
 	var exists bool
-	stmt := `SELECT EXISTS(SELECT true FROM user WHERE id = ?)`
+	stmt := `SELECT EXISTS(SELECT true FROM users WHERE id = ?)`
 	err := m.DB.QueryRow(stmt, id).Scan(&exists)
 	return exists, err
 }
