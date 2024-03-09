@@ -20,7 +20,7 @@ func (app *application) routes() http.Handler {
 	dynamic := alice.New(app.sessionManager.LoadAndSave, app.authenticate)
 
 	router.HandlerFunc(http.MethodGet, "/ping", ping) //for testing 
-	
+	// router.HandlerFunc(http.MethodGet, "snippet/view/:id", app.snippetView)
 
 
 	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.home))

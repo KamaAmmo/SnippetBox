@@ -66,6 +66,7 @@ func newTestApplication(t *testing.T) *application {
 
 func (ts *testServer) get(t *testing.T, urlPath string) (int, http.Header, string) {
 	tr, err := ts.Client().Get(ts.URL + urlPath)
+
 	if err != nil {
 		t.Fatal(err)
 	}

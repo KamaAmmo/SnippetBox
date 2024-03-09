@@ -1,13 +1,17 @@
 package main
 
 import (
-	// "fmt"
 	"html/template"
 	"net/http"
 	"path/filepath"
 	"snippetbox/internal/models"
 	"time"
 )
+
+
+var functions = template.FuncMap{
+	"humanDate": humanDate,
+}
 
 type templateData struct {
 	Snippet         *models.Snippet
@@ -31,13 +35,10 @@ func humanDate(t time.Time) string {
 		return ""
 	}
 
-
 	return t.UTC().Format("02 Jan 2006 at 15:04")
 }
 
-var functions = template.FuncMap{
-	"humanDate": humanDate,
-}
+
 
 func newTemplateCache() (map[string]*template.Template, error) {
 
